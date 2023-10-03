@@ -31,7 +31,7 @@ struct			Bomb
 };
 
 // typedef struct Sprite {
-//   const char *lines[4];
+//   const char *frames[4];
 // } Sprite;
 
 /* To make this compile under Darwin/BSD I have to comment these, until
