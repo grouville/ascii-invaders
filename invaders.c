@@ -72,14 +72,14 @@ static const Sprite sprites[][2][2] = {
     [ASCII] = {
       {
         {
-          " dOOb ",
+          " yaml ",
           " ^/\\^ ",
           "      "
         }
       },
       {
         {
-          " dOOb ",
+          " yaml ",
           " ~||~ ",
           "      "
         }
@@ -140,8 +140,8 @@ static const Sprite sprites[][2][2] = {
     [ASCII] = {
       {
         {
-          "_/MMM\\_",
-          "qWAVAWp"
+          "_/yAm\\_",
+          "  HELL "
         }
       }
     },
@@ -158,8 +158,8 @@ static const Sprite sprites[][2][2] = {
     [ASCII] = {
       {
         {
-          "  mAm  ",
-          " MAZAM "
+            "  /\\  ",
+            "  \\/  "
         }
       }
     },
@@ -228,9 +228,9 @@ static const Sprite sprites[][2][2] = {
     [ASCII] = {
       {
         {
-          "/MMMMM\\",
-          "MMMMMMM",
-          "MMM MMM"
+          "/YAML\\",
+          "YYAMMLL",
+          "HELL HELL"
         }
       }
     },
@@ -238,9 +238,9 @@ static const Sprite sprites[][2][2] = {
       /* TODO */
       {
         {
-          "/MMMMM\\",
-          "MMMMMMM",
-          "MMM MMM"
+          "/YAML\\",
+          "YYAMMLL",
+          "HELL HELL"
         }
       }
     }
@@ -357,6 +357,8 @@ int main(int argc, char **argv) {
     initGame();
     paintIntro();
     game.state = STATE_INTRO;
+
+
 
     // TODO!
     // Instead of registering handleTime here, we should use select
