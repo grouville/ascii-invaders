@@ -22,29 +22,30 @@
  * $Id: invaders.h,v 1.3 2002/07/21 21:52:14 munro Exp $
  */
 
-struct Bomb {
-    int x;
-    int y;
-    int anim;
-    struct Bomb *next;
+struct			Bomb
+{
+	int			x;
+	int			y;
+	int			anim;
+	struct Bomb	*next;
 };
 
-typedef struct Sprite {
-  const char *lines[4];
-} Sprite;
+// typedef struct Sprite {
+//   const char *lines[4];
+// } Sprite;
 
 /* To make this compile under Darwin/BSD I have to comment these, until
    I figure out how to fix this problem (may involve not using apple's curses
    implementation). */
-#define USE_COLORS 1 
+#define USE_COLORS 1
 #define USE_KEYS 1
 
 //#define BULLET_PROOF 1  // debug
 
 #define BOMB_ANIM_SIZE 4 // "frames" in bomb anim
 
-#define FPS 15          // frames per second
-#define PAINT_WAIT 2    // how many frames between row repaints
+#define FPS 15 // frames per second
+#define PAINT_WAIT 2 // how many frames between row repaints
 
 #define ASCII 0
 #define UNICODE 1
@@ -81,4 +82,3 @@ typedef struct Sprite {
 #define STATE_EXPLODE 3
 #define STATE_WAIT 4
 #define STATE_GAMEOVER 5
-

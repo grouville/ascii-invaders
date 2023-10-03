@@ -33,6 +33,17 @@
 #include <sys/signal.h>
 #include <time.h>
 
+#define MAX_SPRITES 10
+#define MAX_FRAMES 2
+#define MAX_LINES 3
+
+typedef struct
+{
+	char	*frames[MAX_FRAMES][MAX_LINES];
+}			Sprite;
+
+Sprite		sprites[MAX_SPRITES];
+
 static const Sprite sprites[][2][2] = {
   [ALIEN30] = {
     [ASCII] = {
@@ -325,7 +336,58 @@ int main(int argc, char **argv) {
 	ctype = UNICODE;
     }
 
-    // set up curses library
+    FILE *file = fopen("sprites.yaml", "r");
+    yaml_parser_t parser;
+    yaml_event_t event;
+
+    if (!yaml_parser_initialize(&parser))
+    {
+    	fprintf(stderr, "Failed to initialize the YAML parser\n");
+    	return (1);
+    }
+
+    yaml_parser_set_input_file(&parser, file);
+
+    int done = 0;
+    int sprite_index = 0;
+    int frame_index = 0;
+    int line_index = 0;
+
+    while (!done)
+    {
+    	if (!yaml_parser_parse(&parser, &event))
+    	{
+    		fprintf(stderr, "Failed to parse YAML event\n");
+    		return (1);
+    	}
+
+    	if (event.type == YAML_SCALAR_EVENT)
+    	{
+    		if (frame_index < MAX_FRAMES && line_index < MAX_LINES)
+    		{
+    			sprites[sprite_index].frames[frame_index][line_index] = strdup((char *)event.data.scalar.value);
+    			line_index++;
+    			if (line_index == MAX_LINES)
+    			{
+    				line_index = 0;
+    				frame_index++;
+    				if (frame_index == MAX_FRAMES)
+    				{
+    					frame_index = 0;
+    					sprite_index++;
+    				}
+    			}
+    		}
+    	}
+
+    	done = (event.type == YAML_STREAM_END_EVENT);
+    	yaml_event_delete(&event);
+    }
+
+    yaml_parser_delete(&parser);
+    fclose(file);
+
+        // set up curses library
     initscr();
     cbreak();
     noecho();
@@ -841,7 +903,7 @@ void paintGunner() {
     for (i = 0; i < GUNNER_HEIGHT; i++) {
         move(LINES - GUNNER_HEIGHT + i, gun.x - (GUNNER_WIDTH / 2));
         if (game.state == STATE_PLAY) {
-            printw("%s", sprites[GUNNER][ctype][0].lines[i]);
+            printw("%s", sprites[GUNNER].frames[0][i]);
         } else if (game.state == STATE_EXPLODE) {
           printw("%s", sprites[GUNNER_EXPLODE][ctype][(game.timer / 4) % 2].lines[i]);
         }
@@ -985,7 +1047,7 @@ void paintIntro() {
 #endif
     mvprintw( 9, (COLS / 2), "= ?  points");
 
-    mvprintw(12, (COLS / 2) - 8, sprites[ALIEN30][ctype][0].lines[0]);
+    mvprintw(12, (COLS / 2) - 8, sprites[ALIEN30].frames[0][0]);
     mvprintw(13, (COLS / 2) - 8, sprites[ALIEN30][ctype][0].lines[1]);
     mvprintw(12, (COLS / 2), "= 30 points");
 
